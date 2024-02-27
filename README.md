@@ -16,14 +16,14 @@ information.
 
 For the web:
 ```
-docker build --target signals-classification-web -t savanasolutions/signals-classification .
-docker push savanasolutions/signals-classification
+docker build --target signals-classification-web -t savanasolutions/signalen-classification .
+docker push savanasolutions/signalen-classification
 ```
 
 For the training of the model:
 ```
-docker build --target signals-classification-train -t savanasolutions/signals-classification-train .
-docker push savanasolutions/signals-classification-train
+docker build --target signals-classification-train -t savanasolutions/signalen-classification-train .
+docker push savanasolutions/signalen-classification-train
 ```
 
 # Building the Docker images
