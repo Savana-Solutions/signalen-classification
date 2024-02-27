@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   web:
-    image: amsterdam/classification
+    image: savanasolutions/signalen-classification
     build:
       context: .
       target: signals-classification-web

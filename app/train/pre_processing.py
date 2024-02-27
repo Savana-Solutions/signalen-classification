@@ -61,21 +61,27 @@ def load_and_clean_data(filepath: str) -> pd.DataFrame:
         The loaded and cleaned DataFrame.
     """
     # Read the CSV file
-    df = pd.read_csv(filepath)
+    df = pd.read_csv(filepath, delimiter=';')
+
+    print(f"DataFrame after reading csv: {df.shape}")
 
     # Rename columns for clarity
-    df.columns = ["main", "sub", "text"]
+    df.columns = ["text", "main", "sub"]
 
     # Drop rows with empty values (None or NaN) in specified columns
     df = df.dropna(
         axis=0,
         how="any",
-        subset=["main", "sub", "text"],
+        subset=["text", "main", "sub"],
         inplace=False,
     )
 
+    print(f"DataFrame after dropping empty values: {df.shape}")
+
     # Drop duplicate texts (keep the first occurrence)
-    df = df.drop_duplicates(subset=["text"], keep="first")
+    df = df.drop_duplicates(subset=None, keep="first")
+
+    print(f"DataFrame after dropping dupes: {df.shape}")
 
     return df
 
@@ -101,6 +107,8 @@ def sample_and_create_label(df: pd.DataFrame, frac: float = 1.0) \
     df = df.sample(frac=frac).reset_index(drop=True)
     df["label"] = df["main"] + "|" + df["sub"]
 
+    print(f"New label: {df['label']}")
+
     return df
 
 
@@ -123,6 +131,8 @@ def filter_labels(df: pd.DataFrame, min_frequency: int = 50) -> pd.DataFrame:
     """
     label_counts = df["label"].value_counts()
     frequent_labels = label_counts[label_counts > min_frequency].index
+
+    print(f"frequent_labels: {df.shape}")
 
     return df[df["label"].isin(frequent_labels)]
 

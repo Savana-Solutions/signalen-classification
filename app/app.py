@@ -14,7 +14,7 @@ def pong():
     Check to see the health of the application, confirming if it is up and running
     """
     return {
-        'health': 'awesome'
+        'health': 'awesome!'
     }
 
 
@@ -26,6 +26,9 @@ def predict():
     This endpoint takes an input text from the request body and predicts the main and sub categories. The top X
     categories along with their probabilities are returned in the response.
     """
+
+    print(f"Text given: {request.json}")
+
     main_category_urls, main_probs = main_model_classify_text(text=request.json['text'], top_n=TOP_N_PREDICTIONS)
     sub_category_urls, sub_probs = sub_model_classify_text(text=request.json['text'], top_n=TOP_N_PREDICTIONS)
 
