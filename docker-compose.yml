@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   web:
-    image: savanasolutions/signalen-classification
+    image: savanasolutions/signalen-classification:0.3
     build:
       context: .
       target: signals-classification-web
@@ -17,7 +17,7 @@ services:
       - .:/app
 
   train:
-    image: amsterdam/classification-train
+    image: savanasolutions/signalen-classification-train:0.1
     build:
       context: .
       target: signals-classification-train

@@ -12,6 +12,22 @@ model, regression analysis is performed in the form of
 To get a prediction from the model there is an API, built using Flask. See section "Running service" below for more
 information.
 
+# How to create personal images:
+
+Don't forget to put your own version numbers in the commands.
+
+For the web:
+```
+docker build --target signals-classification-web -t savanasolutions/signals-classification:0.3 .
+docker push savanasolutions/signals-classification:0.3
+```
+
+For the training of the model:
+```
+docker build --target signals-classification-train -t savanasolutions/signals-classification-train:0.1 .
+docker push savanasolutions/signals-classification-train:0.1
+```
+
 # Building the Docker images
 Navigate to the root directory and pull the  relevant images and build the services:
 
