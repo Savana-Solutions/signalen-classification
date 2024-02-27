@@ -87,8 +87,8 @@ main_categories = load_pickle(file_path=os.path.join(MODELS_DIRECTORY, 'main_slu
 main_model_classify_text = partial(classify_text, model=main_model, categories=main_categories)
 
 # Load the sub-model and sub-categories from pickled files
-sub_model = load_pickle(file_path=os.path.join(MODELS_DIRECTORY, 'sub_model.pkl'))
-sub_categories = load_pickle(file_path=os.path.join(MODELS_DIRECTORY, 'sub_slugs.pkl'))
+sub_model = load_pickle(file_path=os.path.join(MODELS_DIRECTORY, 'main_sub_model.pkl'))
+sub_categories = load_pickle(file_path=os.path.join(MODELS_DIRECTORY, 'main_sub_slugs.pkl'))
 
 # Create a partial function for classifying text using the sub-model
 sub_model_classify_text = partial(classify_text, model=sub_model, categories=sub_categories)
