@@ -14,18 +14,16 @@ information.
 
 # How to create personal images:
 
-Don't forget to put your own version numbers in the commands.
-
 For the web:
 ```
-docker build --target signals-classification-web -t savanasolutions/signals-classification:0.3 .
-docker push savanasolutions/signals-classification:0.3
+docker build --target signals-classification-web -t savanasolutions/signals-classification .
+docker push savanasolutions/signals-classification
 ```
 
 For the training of the model:
 ```
-docker build --target signals-classification-train -t savanasolutions/signals-classification-train:0.1 .
-docker push savanasolutions/signals-classification-train:0.1
+docker build --target signals-classification-train -t savanasolutions/signals-classification-train .
+docker push savanasolutions/signals-classification-train
 ```
 
 # Building the Docker images

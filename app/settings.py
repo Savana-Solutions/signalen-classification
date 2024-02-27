@@ -7,7 +7,7 @@ SIGNALS_CATEGORY_URL = os.getenv(
     'SIGNALS_CATEGORY_URL', 'https://api.signalen-dev.mycleancity.nl/signals/v1/public/terms'
 )
 MODELS_DIRECTORY = os.getenv(
-    'MODELS_DIRECTORY', '/models'
+    'MODELS_DIRECTORY', '/app/models'
 )
 TOP_N_PREDICTIONS = int(os.getenv(
     'TOP_N_PREDICTIONS', '5'
