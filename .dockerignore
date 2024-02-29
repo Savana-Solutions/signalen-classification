@@ -3,7 +3,6 @@
 .gitignore
 input/
 output/
-models/
 .env
 .env.example
 docker-compose.yml
