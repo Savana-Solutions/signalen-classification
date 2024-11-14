@@ -169,17 +169,16 @@ def generate_training_testing_data(df: pd.DataFrame, split: float = 0.9,
     """
     # If columns are not provided, use default columns ['main', 'sub']
     columns = columns or ["main", "sub"]
-
-    # Extract text and label columns from the DataFrame
+    
     texts = df["text"]
     labels = df[columns].apply("|".join, axis=1)
 
-    # Split the data into training and testing sets using stratified sampling
     train_texts, test_texts, train_labels, test_labels = train_test_split(
         texts,
         labels,
         test_size=1 - split,
-        stratify=labels
+        stratify=labels,  # This ensures stratified sampling
+        random_state=42
     )
 
     return train_texts, train_labels, test_texts, test_labels

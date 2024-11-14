@@ -4,6 +4,9 @@ import logging
 import joblib
 import nltk
 
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.over_sampling import RandomOverSampler
+
 from app.train.model_validation import (
     calculate_metrics,
     generate_and_save_confusion_matrix,
@@ -51,6 +54,17 @@ parser.add_argument('--save_detailed_validation',
                     default=False)
 
 
+def balance_dataset(X, y, method='undersample'):
+    if method == 'undersample':
+        sampler = RandomUnderSampler(random_state=42)
+    elif method == 'oversample':
+        sampler = RandomOverSampler(random_state=42)
+    else:
+        raise ValueError("Method must be 'undersample' or 'oversample'")
+    
+    X_resampled, y_resampled = sampler.fit_resample(X.to_frame(), y)
+    return X_resampled.iloc[:, 0], y_resampled
+
 if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
@@ -81,13 +95,16 @@ if __name__ == "__main__":
                                        columns=args.columns)
     )
 
-    # training model
+    # After generating train_texts and train_labels
+    train_texts, train_labels = balance_dataset(train_texts, train_labels, method='undersample')
+
+    # Then proceed with model training
     pipeline = get_pipeline()
     parameters = get_parameters(optimized=True)
     grid_search = perform_grid_search_cv(train_texts=train_texts,
-                                         train_labels=train_labels,
-                                         pipeline=pipeline,
-                                         parameters=parameters)
+                                        train_labels=train_labels,
+                                        pipeline=pipeline,
+                                        parameters=parameters)
 
     # Concat column names used to create the filepath when saving files
     column_names = "_".join(args.columns).lower()
@@ -108,13 +125,12 @@ if __name__ == "__main__":
 
     # Validation
     test_predict = grid_search.predict(test_texts)
-    precision, recall, accuracy = (
-        calculate_metrics(test_labels=test_labels,
-                          test_predict=test_predict)
-    )
+    precision, recall, accuracy, f1, balanced_acc = calculate_metrics(test_labels=test_labels, test_predict=test_predict)
     logging.info(f"Precision: {precision:.2f}")
     logging.info(f"Recall: {recall:.2f}")
     logging.info(f"Accuracy: {accuracy:.2f}")
+    logging.info(f"F1-score: {f1:.2f}")
+    logging.info(f"Balanced Accuracy: {balanced_acc:.2f}")
 
     # Generate confusion matrix and save
     pdf_filepath = f"{args.output_dir}/{column_names}-matrix.pdf"

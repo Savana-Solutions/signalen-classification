@@ -5,7 +5,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 
-
 def get_pipeline(stop_words: str = None) -> Pipeline:
     """
     Parameters
@@ -29,7 +28,7 @@ def get_pipeline(stop_words: str = None) -> Pipeline:
     pipeline = Pipeline([
         ('vect', CountVectorizer(stop_words=stop_words)),
         ('tfidf', TfidfTransformer()),
-        ('clf', LogisticRegression()),
+        ('clf', LogisticRegression(class_weight='balanced')),
     ])
     return pipeline
 

@@ -9,14 +9,15 @@ RUN set -eux; \
     poetry config virtualenvs.create false; \
     poetry completions bash >> ~/.bash_completion
 
-COPY . /app
+COPY pyproject.toml poetry.lock* /app/
 
 WORKDIR /app
 
+RUN poetry install --no-root --with train,web
+
+COPY . /app
 
 FROM signals-classification-base AS signals-classification-web
-
-RUN poetry install --with web
 
 WORKDIR /app/app
 
@@ -29,13 +30,13 @@ ENV UWSGI_HARAKIRI 25
 
 CMD uwsgi
 
-
 FROM signals-classification-base AS signals-classification-train
 
 RUN mkdir /tmp/nltk
 
 ENV NLTK_DATA /tmp/nltk
+ENV PYTHONPATH=/app:$PYTHONPATH
 
-RUN poetry install --with train
+WORKDIR /app
 
-ENTRYPOINT ["python", "/app/app/train/run.py"]
+ENTRYPOINT ["python", "-m", "app.train.run"]
